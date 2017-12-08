@@ -9,6 +9,25 @@ import android.graphics.Paint;
  */
 
 public class Polygon extends GameObject {
+    @Override
+    public int getxPos() {
+        return 0;
+    }
+
+    @Override
+    public int getyPos() {
+        return 0;
+    }
+
+    @Override
+    public void setxPos(int xPos) {
+
+    }
+
+    @Override
+    public void setyPos(int yPos) {
+
+    }
 
     protected  Vector2 position;
     protected int numSides = 3;
