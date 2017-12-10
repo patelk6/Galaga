@@ -64,6 +64,26 @@ public class StarField extends GameObject {
     }
 
     @Override
+    public int getxPos() {
+        return 0;
+    }
+
+    @Override
+    public int getyPos() {
+        return 0;
+    }
+
+    @Override
+    public void setxPos(int xPos) {
+
+    }
+
+    @Override
+    public void setyPos(int yPos) {
+
+    }
+
+    @Override
     public void onDraw(Canvas canvas) {
 
         paint.setColor(Color.argb((int) currentAlpha,255,255,255));
