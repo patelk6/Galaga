@@ -162,7 +162,7 @@ public class Enemy extends GameObject {
     }
 
     @Override
-    public void init(Canvas canvas) {
+    public void init() {
 
     }
 
@@ -198,6 +198,23 @@ public class Enemy extends GameObject {
             arr = e.getCurrPos();
             canvas.drawBitmap(grid.getImage(e.getEnemyType()),arr[0],arr[1],null);
         }
+    }
+    @Override
+    public int getxPos(){
+        return 0;
+    }
+
+
+    public int getyPos(){
+        return 0;
+    }
+
+    public void setxPos(int xPos){
+
+    }
+
+    public void setyPos(int yPos){
+
     }
 }
 

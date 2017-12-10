@@ -33,7 +33,7 @@ public class StarField extends GameObject {
     }
 
     @Override
-    public void init(Canvas canvas) {
+    public void init() {
 
     }
 
@@ -77,6 +77,7 @@ public class StarField extends GameObject {
     public void setxPos(int xPos) {
 
     }
+
 
     @Override
     public void setyPos(int yPos) {

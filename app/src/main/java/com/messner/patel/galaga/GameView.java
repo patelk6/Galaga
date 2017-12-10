@@ -77,29 +77,26 @@ public class GameView extends SurfaceView implements Runnable , View.OnTouchList
         screenSize = point;
         SCREEN_WIDTH = point.x;
         SCREEN_HEIGHT = point.y;
-<<<<<<< HEAD
-        gameObjects.add(new StarField(100,30.0f));
+
+
         grid = new GameGrid(SCREEN_WIDTH,SCREEN_HEIGHT, getContext().getResources());
-//        GameObject temp = new Polygon(new Vector2(getScreenWidth()/2.0f,
-//                getScreenHeight()/2.0f),
-//                5,
-//                20.0f);
-       // Enemy_Old temp = new Enemy_Old(getContext().getResources(),grid);
+//
+
         Enemy temp = new Enemy(grid);
-        gameObjects.add(temp);
+
 
 
         //this.setOnTouchListener(this);
-=======
+
       //  gameObjects.add(new StarField(100,30.0f));
 
-        testFighter = new Fighter(getContext().getResources(),0 , 0);
+        testFighter = new Fighter(grid,0 , 0);
         gameObjects.add(testFighter);
-
+        gameObjects.add(new StarField(100,30.0f));
+        gameObjects.add(temp);
        this.setOnTouchListener(this);
 
         //thisFighter = BitmapFactory.decodeResource(getContext().getResources(),R.drawable.fighter);
->>>>>>> master
 
     }
 
@@ -131,9 +128,7 @@ public class GameView extends SurfaceView implements Runnable , View.OnTouchList
                         tempFighter.getxPos() + adjustment,
                         SCREEN_HEIGHT - 160));
                  **/
-               // gameObjects.add(new Polygon(new Vector2(event.getX(), event.getY()),
-              //          3,
-               //         20.0f));
+
                 break;
 
             case MotionEvent.ACTION_POINTER_DOWN:

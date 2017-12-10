@@ -7,7 +7,7 @@ import android.graphics.Canvas;
  */
 
 public abstract class GameObject {
-    public abstract void init(Canvas canvas);
+    public abstract void init();
 
     public abstract void onUpdate();
 

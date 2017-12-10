@@ -17,14 +17,15 @@ import android.widget.ImageView;
 public class Fighter extends GameObject implements Shootable {
     int xPos , yPos;
     int lives = 1;
-    Bitmap thisFighter;
 
-    public Fighter(Resources resources, int xPos , int yPos){
+    GameGrid grid;
+
+    public Fighter(GameGrid grid,int xPos , int yPos){
         this.xPos = xPos;
         this.yPos = yPos;
 
-        thisFighter = BitmapFactory.decodeResource(resources , R.drawable.fighter);
-
+        //thisFighter = BitmapFactory.decodeResource(resources , R.drawable.fighter);
+        this.grid = grid;
 
 
     }
@@ -63,7 +64,8 @@ public class Fighter extends GameObject implements Shootable {
 
     @Override
     public void onDraw(Canvas canvas) {
-        canvas.drawBitmap(Bitmap.createScaledBitmap(thisFighter,150,150,false),xPos,yPos,null);
+       // canvas.drawBitmap(Bitmap.createScaledBitmap(thisFighter,150,150,false),xPos,yPos,null);
 
+        canvas.drawBitmap(grid.getImage("fighter"),xPos,yPos,null);
     }
 }

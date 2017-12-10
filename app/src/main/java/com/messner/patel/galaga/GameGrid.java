@@ -11,7 +11,8 @@ import android.graphics.Point;
 
 public class GameGrid {
     private Bitmap redgalaga, bluegalaga, greengalaga, greengalaga2;
-    
+
+    private Bitmap fighter;
     
     private GridBox[][] gameboard;
     private int SCREEN_HEIGHT;
@@ -41,10 +42,15 @@ public class GameGrid {
         greengalaga = BitmapFactory.decodeResource(resources,R.drawable.greengalaga);
         greengalaga2 = BitmapFactory.decodeResource(resources,R.drawable.greengalaga2);
 
+        fighter = BitmapFactory.decodeResource(resources , R.drawable.fighter);
+
+
         redgalaga = Bitmap.createScaledBitmap(redgalaga,pixelsPerBox,pixelsPerBox,false);
         bluegalaga = Bitmap.createScaledBitmap(bluegalaga,pixelsPerBox,pixelsPerBox,false);
         greengalaga = Bitmap.createScaledBitmap(greengalaga,pixelsPerBox,pixelsPerBox,false);
         greengalaga2 = Bitmap.createScaledBitmap(greengalaga2,pixelsPerBox,pixelsPerBox,false);
+
+        fighter = Bitmap.createScaledBitmap(fighter,pixelsPerBox,pixelsPerBox,false);
     }
 
     public Bitmap getImage(String enemyType){
@@ -57,6 +63,9 @@ public class GameGrid {
 
             case "green":
                 return greengalaga;
+
+            case "fighter":
+                return fighter;
 
             default:
                 return null;
