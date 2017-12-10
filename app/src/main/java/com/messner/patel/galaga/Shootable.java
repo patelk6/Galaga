@@ -6,5 +6,4 @@ package com.messner.patel.galaga;
 
 public interface Shootable {
     public void shoot();
-    public void test();
 }
