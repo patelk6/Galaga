@@ -38,6 +38,7 @@ public class Enemy extends GameObject {
 
     int count= 0;
     Random random = new Random();
+    int randCount = 10;
 
     public Enemy(GameGrid grid) {
         this.grid = grid;
@@ -184,12 +185,13 @@ public class Enemy extends GameObject {
                 }
             }
         }
-        if(count % 10 == 0) {
+        if(count % 2 == 0) {
             moveCharacter();
 
         }
-        if(count %50 == 0){
+        if(count %randCount == 0){
             chooseCharToMove();
+            randCount = random.nextInt(20) + 1;
         }
         count++;
         for (EnemyCharacter e:movingEnemies) {
