@@ -1,6 +1,7 @@
 package com.messner.patel.galaga;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Point;
@@ -27,12 +28,15 @@ public class GameView extends SurfaceView implements Runnable , View.OnTouchList
     private long currentTimeMilliseconds;
     public static float deltaTime;
     Point screenSize;
-    private static int SCREEN_HEIGHT;
+   public static int SCREEN_HEIGHT;
     private static int SCREEN_WIDTH;
     private List<GameObject> gameObjects = new ArrayList<GameObject>();
     int i;
     private int numSides = 3;
     private Paint paint;
+
+
+    GameGrid grid;
 
     public static int getScreenHeight() {
         return SCREEN_HEIGHT;
@@ -49,14 +53,17 @@ public class GameView extends SurfaceView implements Runnable , View.OnTouchList
         SCREEN_WIDTH = point.x;
         SCREEN_HEIGHT = point.y;
         gameObjects.add(new StarField(100,30.0f));
-
-        GameObject temp = new Polygon(new Vector2(getScreenWidth()/2.0f,
-                getScreenHeight()/2.0f),
-                5,
-                20.0f);
+        grid = new GameGrid(SCREEN_WIDTH,SCREEN_HEIGHT, getContext().getResources());
+//        GameObject temp = new Polygon(new Vector2(getScreenWidth()/2.0f,
+//                getScreenHeight()/2.0f),
+//                5,
+//                20.0f);
+       // Enemy_Old temp = new Enemy_Old(getContext().getResources(),grid);
+        Enemy temp = new Enemy(grid);
         gameObjects.add(temp);
 
-        this.setOnTouchListener(this);
+
+        //this.setOnTouchListener(this);
 
     }
 
@@ -86,9 +93,11 @@ public class GameView extends SurfaceView implements Runnable , View.OnTouchList
 
         previousTimeMilliseconds = System.currentTimeMillis();
 
+        init();
         while(playing){
             currentTimeMilliseconds = System.currentTimeMillis();
             deltaTime = (currentTimeMilliseconds - previousTimeMilliseconds)/1000.0f;
+
             update();
             draw();
             try{
@@ -107,6 +116,15 @@ public class GameView extends SurfaceView implements Runnable , View.OnTouchList
             gameThread.join();
         }catch(InterruptedException e){
 
+        }
+    }
+    public void init(){
+        if(surfaceHolder.getSurface().isValid()){
+            Canvas canvas = surfaceHolder.lockCanvas();
+            for(i = 0; i<gameObjects.size();i++){
+                gameObjects.get(i).onDraw(canvas);
+            }
+            surfaceHolder.unlockCanvasAndPost(canvas);
         }
     }
 

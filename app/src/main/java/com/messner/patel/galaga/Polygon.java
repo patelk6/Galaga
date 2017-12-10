@@ -51,7 +51,7 @@ public class Polygon extends GameObject {
     }
 
     @Override
-    public void init() {
+    public void init(Canvas canvas) {
 
     }
 

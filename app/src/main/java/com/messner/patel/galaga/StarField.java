@@ -33,7 +33,7 @@ public class StarField extends GameObject {
     }
 
     @Override
-    public void init() {
+    public void init(Canvas canvas) {
 
     }
 
