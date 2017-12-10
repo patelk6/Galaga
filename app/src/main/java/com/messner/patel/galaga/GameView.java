@@ -39,6 +39,7 @@ public class GameView extends SurfaceView implements Runnable , View.OnTouchList
     private int numSides = 3;
     private Paint paint;
     GameObject testFighter;
+    boolean continuousTouch = false;
 
 
 
@@ -85,40 +86,52 @@ public class GameView extends SurfaceView implements Runnable , View.OnTouchList
         Fighter tempFighter = (Fighter) gameObjects.get(0);
         int adjustment = 0;
         if(event.getX()>tempFighter.getxPos()){
-            adjustment = 10;
+            adjustment = 30;
         }else{
-            adjustment = -10;
+            adjustment = -30;
         }
+        gameObjects.get(0).setxPos(gameObjects.get(0).getxPos() + adjustment);
+        gameObjects.get(0).setyPos(SCREEN_HEIGHT - 160);
 
 
-        switch(event.getAction()){
+        switch(event.getActionMasked()){
 /**
             case MotionEvent.AXIS_ORIENTATION:
                 gameObjects.add(new Fighter(getResources(),500,500));
                 break;
 **/
             case MotionEvent.ACTION_DOWN:
+
+                continuousTouch = true;
+
+                /**
                 gameObjects.set(0,new Fighter(getResources(),
                         tempFighter.getxPos() + adjustment,
                         SCREEN_HEIGHT - 160));
+                 **/
                // gameObjects.add(new Polygon(new Vector2(event.getX(), event.getY()),
               //          3,
                //         20.0f));
                 break;
-            /**
-            case MotionEvent.ACTION_UP:
-               // gameObjects.add(new Polygon(new Vector2(event.getX(), event.getY()),
-              //          numSides,
-              //          20.0f));
-              //  numSides++;
+
+            case MotionEvent.ACTION_POINTER_DOWN:
+                gameObjects.add(new FighterMissile(getResources(),
+                        (gameObjects.get(0).getxPos()),SCREEN_HEIGHT - 320));
                 break;
-             **/
+
+
+            case MotionEvent.ACTION_UP:
+               continuousTouch = false;
+                break;
+
             case MotionEvent.ACTION_MOVE:
+                /**
                 gameObjects.set(0, new Fighter(getResources(),
                         tempFighter.getxPos() + adjustment,
                       //  tempFighter.getxPos() + ((tempFighter.getxPos() + (int)event.getX())/10),
                         SCREEN_HEIGHT - 160));
                 break;
+                 **/
 
         }
         return true;

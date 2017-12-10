@@ -48,6 +48,7 @@ public class Fighter extends GameObject implements Shootable {
 
     public void shoot(){
 
+
     }
 
     @Override
