@@ -2,10 +2,7 @@ package com.messner.patel.galaga;
 
 import android.content.Context;
 
-import android.content.res.Resources;
-
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -14,9 +11,6 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -82,18 +76,21 @@ public class GameView extends SurfaceView implements Runnable , View.OnTouchList
         grid = new GameGrid(SCREEN_WIDTH,SCREEN_HEIGHT, getContext().getResources());
 //
 
-        Enemy temp = new Enemy(grid);
+        Enemy enemy = new Enemy(grid);
 
 
 
         //this.setOnTouchListener(this);
 
       //  gameObjects.add(new StarField(100,30.0f));
+        int[] t = grid.getBoard()[0][grid.getGridHeight()-1].getCornerCoord();
+        testFighter = new Fighter(grid,t[0] , t[1]);
 
-        testFighter = new Fighter(grid,0 , 0);
         gameObjects.add(testFighter);
         gameObjects.add(new StarField(100,30.0f));
-        gameObjects.add(temp);
+        gameObjects.add(enemy);
+        Missile missile = new Missile(grid);
+        gameObjects.add(missile);
        this.setOnTouchListener(this);
 
         //thisFighter = BitmapFactory.decodeResource(getContext().getResources(),R.drawable.fighter);
@@ -103,14 +100,24 @@ public class GameView extends SurfaceView implements Runnable , View.OnTouchList
     @Override
     public boolean onTouch(View v, MotionEvent event){
         Fighter tempFighter = (Fighter) gameObjects.get(0);
-        int adjustment = 0;
-        if(event.getX()>tempFighter.getxPos()){
-            adjustment = 30;
-        }else{
-            adjustment = -30;
+        int direction = 0;
+        int currPos[] = tempFighter.getCurrPos();
+        int touchPos = (int)event.getX();
+        if(Math.abs(touchPos - currPos[0]) > grid.getPixelsPerBox()/2) {
+            if (touchPos > currPos[0]) {
+                //move right
+                direction = 1;
+            } else {
+                //move left
+                direction = -1;
+            }
         }
-        gameObjects.get(0).setxPos(gameObjects.get(0).getxPos() + adjustment);
-        gameObjects.get(0).setyPos(SCREEN_HEIGHT - 160);
+
+        currPos = grid.moveSide(currPos,direction);
+        ((Fighter) gameObjects.get(0)).setCurrPos(currPos);
+        ((Fighter) gameObjects.get(0)).setGridPos(direction);
+        //gameObjects.get(0).setxPos(gameObjects.get(0).getxPos() + adjustment);
+      //  gameObjects.get(0).setyPos(SCREEN_HEIGHT - 160);
 
 
         switch(event.getActionMasked()){
@@ -132,8 +139,10 @@ public class GameView extends SurfaceView implements Runnable , View.OnTouchList
                 break;
 
             case MotionEvent.ACTION_POINTER_DOWN:
-                gameObjects.add(new FighterMissile(getResources(),
-                        (gameObjects.get(0).getxPos()),SCREEN_HEIGHT - 320));
+                //gameObjects.add(new MissileCharacter(grid,
+                  //      (((Fighter) gameObjects.get(0)).getCurrPos())));
+
+                ((Missile) gameObjects.get(3)).addFighterMissile(((Fighter) gameObjects.get(0)).getCurrPos(), ((Fighter) gameObjects.get(0)).getGridPos());
                 break;
 
 

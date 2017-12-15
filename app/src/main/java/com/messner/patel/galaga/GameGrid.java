@@ -3,6 +3,7 @@ package com.messner.patel.galaga;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.Point;
 
 /**
@@ -12,13 +13,15 @@ import android.graphics.Point;
 public class GameGrid {
     private Bitmap redgalaga, bluegalaga, greengalaga, greengalaga2;
 
-    private Bitmap fighter;
+    private Bitmap fighter, missile, explosion;
     
     private GridBox[][] gameboard;
     private int SCREEN_HEIGHT;
     private int SCREEN_WIDTH;
 
-    private final int gridWidth = 14;
+    public static int shiftSpace = 2;
+
+    private final int gridWidth = 10 + shiftSpace*2;
     private int gridHeight;
     private int pixelsPerBox;
 
@@ -43,7 +46,8 @@ public class GameGrid {
         greengalaga2 = BitmapFactory.decodeResource(resources,R.drawable.greengalaga2);
 
         fighter = BitmapFactory.decodeResource(resources , R.drawable.fighter);
-
+        missile = BitmapFactory.decodeResource(resources, R.drawable.galagamissile);
+        explosion = BitmapFactory.decodeResource(resources, R.drawable.explosion);
 
         redgalaga = Bitmap.createScaledBitmap(redgalaga,pixelsPerBox,pixelsPerBox,false);
         bluegalaga = Bitmap.createScaledBitmap(bluegalaga,pixelsPerBox,pixelsPerBox,false);
@@ -51,6 +55,8 @@ public class GameGrid {
         greengalaga2 = Bitmap.createScaledBitmap(greengalaga2,pixelsPerBox,pixelsPerBox,false);
 
         fighter = Bitmap.createScaledBitmap(fighter,pixelsPerBox,pixelsPerBox,false);
+        missile = Bitmap.createScaledBitmap(missile,pixelsPerBox,pixelsPerBox,false);
+        explosion = Bitmap.createScaledBitmap(explosion,pixelsPerBox,pixelsPerBox, false);
     }
 
     public Bitmap getImage(String enemyType){
@@ -67,11 +73,24 @@ public class GameGrid {
             case "fighter":
                 return fighter;
 
+            case "missile":
+                return missile;
+
+            case "explosion":
+                return explosion;
+
             default:
                 return null;
         }
     }
 
+    public Bitmap rotateImage(String enemyType, int angle){
+        Bitmap source = getImage(enemyType);
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(), matrix, true);
+
+    }
 
 
 
@@ -87,16 +106,8 @@ public class GameGrid {
                 tempMatrix[i][j] = new GridBox(i,j,pixelsPerBox);
             }
         }
-
         gameboard = tempMatrix;
-
     }
-
-
-
-
-
-
 
     public int getPixelsPerBox(){
         return pixelsPerBox;
@@ -106,9 +117,28 @@ public class GameGrid {
         return gameboard;
     }
 
-    public int[] moveDown(int[] temp){
-        temp[1] = temp[1] + pixelsPerBox;
+    public int[] moveVertical(int[] temp, int direction){
+        temp[1] = temp[1] + pixelsPerBox*direction;
         return temp;
+    }
+
+    public int getGridHeight(){
+        return gridHeight;
+    }
+
+    public int getGridWidth(){
+        return gridWidth;
+    }
+
+    public int[] moveSide(int pos[],int direction){
+        int tempPos = pos[0];
+        int leftSide = gridWidth*pixelsPerBox;
+        if(tempPos >= 0 && tempPos < leftSide){
+            pos[0] = tempPos + pixelsPerBox*direction;
+        }else{
+            pos[0] = leftSide - pixelsPerBox;
+        }
+        return pos;
     }
 
     public int getPlayableHeight(){

@@ -11,6 +11,7 @@ public class EnemyCharacter {
     private String enemyType;
     private boolean isHittable;
     private boolean isMoving;
+    private boolean isDestroy = false;
 
 
 
@@ -62,4 +63,11 @@ public class EnemyCharacter {
         return isMoving;
     }
 
+    public boolean getIsDestroy(){
+        return isDestroy;
+    }
+
+    public void setIsDestroy(boolean set){
+        isDestroy = set;
+    }
 }

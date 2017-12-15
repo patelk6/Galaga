@@ -13,11 +13,4 @@ public abstract class GameObject {
 
     public abstract void onDraw(Canvas canvas);
 
-    public abstract int getxPos();
-
-    public abstract int getyPos();
-
-    public abstract void setxPos(int xPos);
-
-    public abstract void setyPos(int yPos);
 }
