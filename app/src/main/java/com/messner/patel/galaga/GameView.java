@@ -44,7 +44,7 @@ public class GameView extends SurfaceView implements Runnable , View.OnTouchList
     private Paint paint;
     GameObject testFighter;
     boolean continuousTouch = false;
-
+    SoundManager sm;
 
 
     Bitmap thisFighter;
@@ -62,6 +62,8 @@ public class GameView extends SurfaceView implements Runnable , View.OnTouchList
 
     public GameView(Context context, Point point) {
         super(context);
+        sm = new SoundManager(context);
+        sm.startMusic();
         /**
         leftButton = new Button(getContext());
         rightButton = new Button(context);
@@ -134,6 +136,7 @@ public class GameView extends SurfaceView implements Runnable , View.OnTouchList
             case MotionEvent.ACTION_POINTER_DOWN:
                 gameObjects.add(new FighterMissile(getResources(),
                         (gameObjects.get(0).getxPos()),SCREEN_HEIGHT - 320));
+                sm.laserShot();
                 break;
 
 
