@@ -3,6 +3,7 @@ package com.messner.patel.galaga;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.drawable.GradientDrawable;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -16,14 +17,14 @@ public class Enemy extends GameObject {
     GameGrid grid;
 
    // ArrayList<ArrayList<EnemyCharacter>> enemyRestPositions = new ArrayList<>();
-    EnemyCharacter[][] enemyRestPositions = new EnemyCharacter[5][10];
-    ArrayList<EnemyCharacter> movingEnemies = new ArrayList<>();
+    public static EnemyCharacter[][] enemyRestPositions = new EnemyCharacter[5][10];
+    public static ArrayList<EnemyCharacter> movingEnemies = new ArrayList<>();
    // private ArrayList<EnemyCharacter> hittableRestEnemies = new ArrayList<>();
 
 
-    private final int startLocGreen = 5; //This is the amount of grids the green guys are from the LEFT side
-    private final int startLocRed = 3; //From left the amount of grid in the red guys start
-    private final int startLocBlue = 2;
+    private final int startLocGreen = 3 + GameGrid.shiftSpace; //This is the amount of grids the green guys are from the LEFT side
+    private final int startLocRed = 1 + GameGrid.shiftSpace; //From left the amount of grid in the red guys start
+    private final int startLocBlue = 0 + GameGrid.shiftSpace;
 
     private  int quantGreenGalaga = 4;
     private  int quantRedGalaga = 16;
@@ -55,7 +56,7 @@ public class Enemy extends GameObject {
             enemyRestPositions[0][i] = new EnemyCharacter("green",grid.getBoard()[startLocGreen + i][0].getCornerCoord(),temp);
         }
         for(int layers = 0; layers < quantRedLayers; layers++) {
-            for (int i = 0; i < quantRedGalaga/2; i++) {
+            for (int i = 0; i <= quantRedGalaga/2 - 1; i++) {
                 temp[0] = 1+layers;
                 temp[1] = i;
                 enemyRestPositions[1+layers][i] = new EnemyCharacter("red", grid.getBoard()[startLocRed + i][1+layers].getCornerCoord(),temp);
@@ -108,7 +109,7 @@ public class Enemy extends GameObject {
         for (int i = 0;i< movingEnemies.size();i++) {
             EnemyCharacter e = movingEnemies.get(i);
             int currPos[] = e.getCurrPos();
-            e.setCurrPos(grid.moveDown(currPos));
+            e.setCurrPos(grid.moveVertical(currPos, 1));
             if(currPos[1] > grid.getPlayableHeight()){
                 currPos[1] = 0;
                 e.setCurrPos(currPos);
@@ -145,6 +146,10 @@ public class Enemy extends GameObject {
 
     }
 
+    public static ArrayList<EnemyCharacter> getMovingEnemies(){
+        return movingEnemies;
+    }
+
 
 
     public void destroy(EnemyCharacter e){
@@ -163,25 +168,27 @@ public class Enemy extends GameObject {
 
     @Override
     public void init() {
-
     }
 
     @Override
     public void onUpdate() {
-
     }
 
     @Override
     public void onDraw(Canvas canvas) {
         int[] arr = new int[2];
         //setHittableEnemies();
-        for(int i = 0; i < 5; i++){
-            for(int j = 0; j < 10; j++){
+        for(int i = 0; i < enemyRestPositions.length - 1; i++){
+            for(int j = 0; j < enemyRestPositions[0].length - 1; j++){
                 EnemyCharacter temp = enemyRestPositions[i][j];
                 if(temp != null){
                     arr = temp.getRestLocation();
-                    canvas.drawBitmap(grid.getImage(temp.getEnemyType()),arr[0],arr[1], null);
-
+                    if(temp.getIsDestroy()){
+                        canvas.drawBitmap(grid.getImage("explosion"),arr[0],arr[1],null);
+                        enemyRestPositions[i][j] = null;
+                    }else {
+                        canvas.drawBitmap(grid.getImage(temp.getEnemyType()), arr[0], arr[1], null);
+                    }
                 }
             }
         }
@@ -189,32 +196,24 @@ public class Enemy extends GameObject {
             moveCharacter();
 
         }
-        if(count %randCount == 0){
+        if(count % randCount == 0){
             chooseCharToMove();
             randCount = random.nextInt(20) + 1;
         }
         count++;
-        for (EnemyCharacter e:movingEnemies) {
-            arr = e.getCurrPos();
-            canvas.drawBitmap(grid.getImage(e.getEnemyType()),arr[0],arr[1],null);
+        ArrayList<EnemyCharacter> e = new ArrayList<>();
+        e.addAll(movingEnemies);
+        for (EnemyCharacter c:e) {
+            arr = c.getCurrPos();
+            if(c.getIsDestroy()){
+                canvas.drawBitmap(grid.getImage("explosion"),arr[0],arr[1],null);
+                movingEnemies.remove(c);
+            }else{
+                canvas.drawBitmap(grid.getImage(c.getEnemyType()),arr[0],arr[1],null);
+
+            }
         }
     }
-    @Override
-    public int getxPos(){
-        return 0;
-    }
 
-
-    public int getyPos(){
-        return 0;
-    }
-
-    public void setxPos(int xPos){
-
-    }
-
-    public void setyPos(int yPos){
-
-    }
 }
 

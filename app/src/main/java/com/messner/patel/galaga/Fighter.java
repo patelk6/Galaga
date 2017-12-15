@@ -18,6 +18,11 @@ public class Fighter extends GameObject implements Shootable {
     int xPos , yPos;
     int lives = 1;
 
+    private int[] currPos = new int[2];
+    private int[] gridPos = new int[2];
+
+
+
     GameGrid grid;
 
     public Fighter(GameGrid grid,int xPos , int yPos){
@@ -27,29 +32,32 @@ public class Fighter extends GameObject implements Shootable {
         //thisFighter = BitmapFactory.decodeResource(resources , R.drawable.fighter);
         this.grid = grid;
 
+        gridPos[0] = 0;
+        gridPos[1] = grid.getGridHeight() - 1;
+        currPos = grid.getBoard()[gridPos[0]][gridPos[1]].getCornerCoord();
 
     }
-    public int getxPos(){
-        return xPos;
+
+    public int[] getCurrPos(){
+        return currPos;
     }
 
-    public int getyPos(){
-        return yPos;
+    public void setCurrPos(int[] temp){
+        currPos = temp;
     }
-
-    public void setxPos(int xPos) {
-        this.xPos = xPos;
-    }
-
-    public void setyPos(int yPos) {
-        this.yPos = yPos;
-    }
-
-
 
     public void shoot(){
 
+    }
 
+    public int[] getGridPos(){
+        return gridPos;
+    }
+
+    public void setGridPos(int set){
+        if(gridPos[0] >= 0 && gridPos[0] <= grid.getGridWidth()) {
+            gridPos[0] += set;
+        }
     }
 
     @Override
@@ -64,8 +72,6 @@ public class Fighter extends GameObject implements Shootable {
 
     @Override
     public void onDraw(Canvas canvas) {
-       // canvas.drawBitmap(Bitmap.createScaledBitmap(thisFighter,150,150,false),xPos,yPos,null);
-
-        canvas.drawBitmap(grid.getImage("fighter"),xPos,yPos,null);
+        canvas.drawBitmap(grid.getImage("fighter"),currPos[0],currPos[1],null);
     }
 }
